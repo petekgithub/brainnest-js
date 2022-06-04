@@ -1,5 +1,3 @@
-
-
 function computerPlay() {
   const choice = ['rock','paper','scissors'];
   return choice[Math.floor(Math.random()*choice.length)]
@@ -12,41 +10,60 @@ function playOneRound(playerSelection, computerSelection) {
   if(playerSelection === null || computerSelection === null) {
     return "Invalid input, try again"
   }
+  if(playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors" ) {
+    return "Invalid input, try again"
+  }
 
-  if(playerSelection === computerSelection) {
+  if(playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
     return "It's a tie!"
   }
 
-  else if (playerSelection === 'rock' && computerSelection === 'scissors') {
-    return `You win! ${playerSelection.toUpperCase()} beats ${computerSelection.toUpperCase()}`;
+  if (playerSelection.toLowerCase() === 'rock') {
+    if(computerSelection.toLowerCase() === 'scissors') { 
+      return `win! ${playerSelection} beats ${computerSelection}`;
+    }else {
+      return `lost! ${computerSelection} beats ${playerSelection}`;
+    }
   }
 
-  else if(playerSelection === 'paper' && computerSelection === 'rock') {
-    return `You win! ${playerSelection.toUpperCase()} beats ${computerSelection.toUpperCase()}`;
-  } 
-  
-  else if(playerSelection === 'scissors' && computerSelection === 'paper') {
-    return `You win! ${playerSelection.toUpperCase()} beats ${computerSelection.toUpperCase()}`;
+  if (playerSelection.toLowerCase() === 'paper') {
+    if(computerSelection.toLowerCase() === 'rock') { 
+      return `win! ${playerSelection} beats ${computerSelection}`;
+    }else {
+      return `lost! ${computerSelection} beats ${playerSelection}`;
+    }
   }
-  else {
-    return `You lost! ${computerSelection.toUpperCase()} beats ${playerSelection.toUpperCase()}`;
 
+  if (playerSelection.toLowerCase() === 'scissors') {
+    if(computerSelection.toLowerCase() === 'paper') { 
+      return `win! ${playerSelection} beats ${computerSelection}`;
+    } else {
+      return `lost! ${computerSelection} beats ${playerSelection}`;
+    }
   }
 
 }
 
 function game() {  
 
+  let playerWins, computerWins, tie = 0;
+
   for(let i = 0; i < 5; i++) {
     const playerSelection = prompt("Please enter one of these: rock, paper or scissors")
     const computerSelection = computerPlay();
-    console.log(`Your choice: ${playerSelection}`);
-    console.log(`Computer's choice: ${computerSelection}`);
-    console.log(`Final: ${playOneRound(playerSelection, computerSelection)}`);
-    console.log("********************");
 
+    const winner = playOneRound(playerSelection,computerSelection);
+    console.log(winner);
+
+    if(winner.includes("win")) {
+      playerWins += 1;
+    }else if (winner.includes("lost")){
+      computerWins +=1;
+    } else if(winner.includes("tie")){
+      tie +=1;
+    }
   }
-
+  console.log(`You won: ${playerWins}, Computer won: ${computerWins} and Tie: ${tie} `)
 
 }
 

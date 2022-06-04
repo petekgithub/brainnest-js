@@ -8,6 +8,11 @@ function computerPlay() {
 
 function playOneRound(playerSelection, computerSelection) {
 
+  // invalid input
+  if(playerSelection === null || computerSelection === null) {
+    return "Invalid input, try again"
+  }
+
   if(playerSelection === computerSelection) {
     return "It's a tie!"
   }

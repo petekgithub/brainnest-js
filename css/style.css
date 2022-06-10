@@ -30,12 +30,31 @@ body {
   text-align: center;
 }
 
+.play-btn{
+  font-size: var(--fs-lg);
+  background: var(--primary-color);
+  transition: all .2s ease-in-out;
+  padding: 0.4rem 1.3rem;
+  border: 2px solid #7C3E66;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 2rem;
+}
+
+.play-btn:hover{
+  background: var(--primary-color);
+  transform: scale(1.1);
+  color: #fff;
+
+}
+
 .restart-btn {
-  display: none;
   background: #F5C6AA;
   color: #333;
   padding: 0.4rem 1.3rem;
   font-size: 1rem;
+  transition: all .2s ease-in-out;
   cursor: pointer;
   outline: none;
   border: 2px solid #7C3E66;
@@ -45,6 +64,8 @@ body {
 .restart-btn:hover {
   background: var(--primary-color);
   color: #fff;
+  transform: scale(1.1);
+
 }
 
 .header {

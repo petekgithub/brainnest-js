@@ -1,119 +1,183 @@
-// const choices = ['rock','paper','scissors'];
-const choices = document.querySelectorAll('.choice');
+// Game choices
+// const choices = document.querySelectorAll('.choice');
+const rock = document.getElementById("rock");
+const paper = document.getElementById("paper");
+const scissors = document.getElementById("scissors");
+const restartButton = document.getElementById('restart');
+const playButton = document.querySelector(".play-btn");
+
+//Game display 
 const score = document.getElementById('score');
 const result = document.getElementById('result');
-const restart = document.getElementById('restart');
 const modal = document.querySelector('.modal');
 
 
-function click() {
-  return playRound();
+// Beginner score values
+const scoreboard = {
+  playerScore: 0,
+  computerScore: 0
+};
+
+
+// Get computers choice
+function getComputerChoice() {
+  return choices[randomInteger(choices.length)-1];
 }
-
-
 function randomInteger(max, min = 0) {
   return Math.floor(Math.random()*(max-min+1))+min;
 }
 
-function getRandomChoice() {
-  return choices[randomInteger(choices.length)-1];
-}
 
+// Validation control
 function sanitize(input) {
   return input.trim().toLowerCase()
 }
 
 function validate(input) {
   const errors = [];
-
   if(!input) {
     errors.push('Input must not be empty')
   }
-
   if(!choices.includes(input)) {
     errors.put('Input must be one of the following: rock, paper or scissors')
   }
-
   if(errors.length) {
     throw new Error(errors.join(', '))
   }
 }
 
-function getResult(player1, player2) {
-  const battleMap = {
-    rock: 'scissors',
-    paper: 'rock',
-    scissors: 'paper'
-  };
 
-  if(player1 === player2) {
-    return 'tie';
+// Play game
+function playRound(e) {
+  restart.style.display = 'inline-block';
+  const playerChoice = e.target.id;
+  const computerChoice = getComputerChoice();
+  const winner = playGame(playerChoice, computerChoice);
+  showWinner(winner, computerChoice);
+
+  const playerTurn = sanitize(input);
+
+  validate(playerTurn);
+  playGame();
+}
+
+
+// Get game winner
+const playGame = (playerSelection, computerSelection) => {
+  if(playerSelection.toLowerCase() === computerSelection.toLowerCase()){
+      return "Tie!";
   }
+  if(playerSelection.toLowerCase() === "paper" ){
+      if(computerSelection.toLowerCase() === "rock"){
+          playerScore++;
+          return `You Win! ${playerSelection} beats ${computerSelection}`;
+      }
+      else{
+          computerScore++;
+          return `You Lose! ${computerSelection} beats ${playerSelection}`;
 
-  if (battleMap[player1] === player2) {
-    return 'win';
-  } else {
-    return 'lose';
+      }
   }
-
+  else if(playerSelection.toLowerCase() === "rock"){
+      if(computerSelection.toLowerCase() === "scissors"){
+          playerScore++;
+          return `You Win! ${playerSelection} beats ${computerSelection}`;
+      }
+      else{
+          computerScore++;
+          return `You Lose! ${computerSelection} beats ${playerSelection}`;
+      }
+  }
+  else if(playerSelection.toLowerCase() === "scissors"){
+      if(computerSelection.toLowerCase() === "paper"){
+          playerScore++;
+          return `You Win! ${playerSelection} beats ${computerSelection}`;
+      }
+      else{
+          computerScore++;
+          return `You Lose! ${computerSelection} beats ${playerSelection}`;
+      }
+  }
 }
 
-function getMessage() {
-  const messages = {
-    tie: () => `It's a tie!`,
-    win: (player1, player2) => `You win! ${player1} beats ${player2}`,
-    lose: (player1, player2) => `You lose! ${player2} beats ${player1}`
-  };
 
-  return messages[result](player1, player2);
-}
+const showWinner = (playerMove) => {
+  if(playerScore === 5){
+          result.innerHTML = `
+          <h1 class="text-win>You Win!</h1>
+          <i class="fas fa-hand-${computerScore} fa-10x"></i>
+          <p>Computer chose <strong>{computerScore}</strong></p>
+          `;
+          restartButton.classList.remove("disappear");
+          return;
 
+  }else if(computerScore === 5){
+          result.innerHTML = `
+          <h1 class="text-lose>You Lose!</h1>
+          <i class="fas fa-hand-${computerScore} fa-10x"></i>
+          <p>Computer chose <strong>{computerScore}</strong></p>
+          `;
+          restartButton.classList.remove("disappear");
 
-function playRound(input) {
-
-      const player1 = sanitize(input);
-      const player2 = getRandomChoice();
-  
-      validate(player1);
-  
-      const result = getResult(player1, player2);
-      const message = getMessage(result, player1, player2);
-  
-      return {
-        result,
-        message
-      };
-}
-
-function game() {
-  const scores = {
-    wins: 0,
-    losses: 0,
-    ties: 0,
-  };
-
-  //----------------------------(1)--------------------------------------------------//
-  const numberOfRounds = 5;
-  for(let i = 0; i < numberOfRounds; i += 1) {
-    // const input = prompt('Please enter one of these: rock, paper or scissors')
-
-    // event listeners
-    
-
-
-    const { result, message } = playRound(input);
-
-    if (result === 'win') {
-      scores.wins += 1;
-    } else if (result === 'lose') {
-      scores.losses += 1
-    } else{
-      scores.ties += 1
+  }else {
+    if(playerScore <= 4 && computerScore <= 4){
+        const computerMove = computerPlay();
+        const gameResult = playGame(playerMove, computerMove);
+       result.innerHTML = `
+          <h1>It's a Tie!</h1>
+          <i class="fas fa-hand-${computerScore} fa-10x"></i>
+          <p>Computer chose <strong>{computerScore}</strong></p>
+          `;
+          restartButton.classList.remove("disappear");
     }
-
-    console.log(message);
   }
 
-  console.log(`You won: ${scores.wins}, Computer won: ${scores.losses} and Tie: ${scores.ties} `)
+  // Show score
+  score.innerHTML=`
+    <p>Player: ${scoreboard.player}</p>
+    <p>Computer: ${scoreboard.computer}</p>
+  `;
+
+  modal.style.display = block;
 
 }
+
+
+// Restart game
+function restartGame() {
+  scoreboard.player = 0;
+  scoreboard.computer = 0;
+  score.innerHTML = `
+    <p>Player: 0</p>
+    <p>Computer: 0</p>
+  `;
+}
+
+// Clear modal
+function clearModal(e) {
+  if (e.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Event listeners
+window.addEventListener('click', clearModal);
+restart.addEventListener('click', restartGame);
+// choices.forEach((choice) => choice.addEventListener('click',playRound));
+
+rock.addEventListener("click", () => {
+  showWinner("rock");
+});
+
+paper.addEventListener("click", () => {
+  showWinner("paper");
+});
+
+scissors.addEventListener("click", () => {
+  showWinner("scissors");
+});
+
+// playButton.addEventListener("click",(e) => {
+//   startGame();
+// });
+

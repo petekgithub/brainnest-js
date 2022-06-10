@@ -4,7 +4,6 @@ const rock = document.getElementById("rock");
 const paper = document.getElementById("paper");
 const scissors = document.getElementById("scissors");
 const restartButton = document.getElementById('restart');
-// const playButton = document.querySelector(".play-btn");
 
 //Game display 
 const score = document.getElementById('score');
@@ -178,7 +177,5 @@ scissors.addEventListener("click", () => {
   showWinner("scissors");
 });
 
-// playButton.addEventListener("click",(e) => {
-//   startGame();
-// });
+
 

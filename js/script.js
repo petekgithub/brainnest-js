@@ -18,6 +18,7 @@ const scoreboard = {
   computerScore: 0
 };
 
+const choices = ['rock', 'paper', 'scissors'];
 
 // Get computers choice
 function getComputerChoice() {
@@ -58,7 +59,7 @@ function playRound(e) {
   const playerTurn = sanitize(input);
 
   validate(playerTurn);
-  playGame();
+  // playGame();
 }
 
 
@@ -69,32 +70,32 @@ const playGame = (playerSelection, computerSelection) => {
   }
   if(playerSelection.toLowerCase() === "paper" ){
       if(computerSelection.toLowerCase() === "rock"){
-          playerScore++;
+          scoreboard.playerScore++;
           return `You Win! ${playerSelection} beats ${computerSelection}`;
       }
       else{
-          computerScore++;
+          scoreboard.computerScore++;
           return `You Lose! ${computerSelection} beats ${playerSelection}`;
 
       }
   }
   else if(playerSelection.toLowerCase() === "rock"){
       if(computerSelection.toLowerCase() === "scissors"){
-          playerScore++;
+          scoreboard.playerScore++;
           return `You Win! ${playerSelection} beats ${computerSelection}`;
       }
       else{
-          computerScore++;
+          scoreboard.computerScore++;
           return `You Lose! ${computerSelection} beats ${playerSelection}`;
       }
   }
   else if(playerSelection.toLowerCase() === "scissors"){
       if(computerSelection.toLowerCase() === "paper"){
-          playerScore++;
+          scoreboard.playerScore++;
           return `You Win! ${playerSelection} beats ${computerSelection}`;
       }
       else{
-          computerScore++;
+          scoreboard.computerScore++;
           return `You Lose! ${computerSelection} beats ${playerSelection}`;
       }
   }
@@ -102,31 +103,31 @@ const playGame = (playerSelection, computerSelection) => {
 
 
 const showWinner = (playerMove) => {
-  if(playerScore === 5){
+  if(scoreboard.playerScore === 5){
           result.innerHTML = `
           <h1 class="text-win>You Win!</h1>
-          <i class="fas fa-hand-${computerScore} fa-10x"></i>
-          <p>Computer chose <strong>{computerScore}</strong></p>
+          <i class="fas fa-hand-${scoreboard.computerScore} fa-10x"></i>
+          <p>Computer chose <strong>${scoreboard.computerScore}</strong></p>
           `;
           restartButton.classList.remove("disappear");
           return;
 
-  }else if(computerScore === 5){
+  }else if(scoreboard.computerScore === 5){
           result.innerHTML = `
           <h1 class="text-lose>You Lose!</h1>
-          <i class="fas fa-hand-${computerScore} fa-10x"></i>
-          <p>Computer chose <strong>{computerScore}</strong></p>
+          <i class="fas fa-hand-${scoreboard.computerScore} fa-10x"></i>
+          <p>Computer chose <strong>${scoreboard.computerScore}</strong></p>
           `;
           restartButton.classList.remove("disappear");
 
   }else {
-    if(playerScore <= 4 && computerScore <= 4){
-        const computerMove = computerPlay();
+    if(scoreboard.playerScore <= 4 && scoreboard.computerScore <= 4){
+        const computerMove = getComputerChoice();
         const gameResult = playGame(playerMove, computerMove);
        result.innerHTML = `
           <h1>It's a Tie!</h1>
-          <i class="fas fa-hand-${computerScore} fa-10x"></i>
-          <p>Computer chose <strong>{computerScore}</strong></p>
+          <i class="fas fa-hand-${scoreboard.computerScore} fa-10x"></i>
+          <p>Computer chose <strong>${scoreboard.computerScore}</strong></p>
           `;
           restartButton.classList.remove("disappear");
     }
@@ -134,11 +135,11 @@ const showWinner = (playerMove) => {
 
   // Show score
   score.innerHTML=`
-    <p>Player: ${scoreboard.player}</p>
-    <p>Computer: ${scoreboard.computer}</p>
+    <p>Player: ${scoreboard.playerScore}</p>
+    <p>Computer: ${scoreboard.computerScore}</p>
   `;
 
-  modal.style.display = block;
+  modal.style.display = 'block';
 
 }
 
